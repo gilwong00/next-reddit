@@ -8,17 +8,17 @@ import {
 } from 'typeorm';
 import { hash, genSaltSync } from 'bcryptjs';
 
-@Entity()
+@Entity('users')
 class User extends Base {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Index()
-  @Column()
+  @Column({ unique: true })
   username: string;
 
   @Index()
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()
