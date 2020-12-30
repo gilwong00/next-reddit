@@ -1,0 +1,20 @@
+{
+	"type": "postgres",
+	"host": "localhost",
+	"port": 5432,
+	"username": "postgres",
+	"password": "postgres",
+	"database": "next_reddit",
+	"synchronize": true,
+	"logging": false,
+	"entities": [
+		"server/entity/**/*.ts"
+	],
+	"migrations": [
+		"server/migration/**/*.ts"
+	],
+	"cli": {
+		"entitiesDir": "server/entity",
+		"migrationsDir": "server/migration"
+	}
+}
