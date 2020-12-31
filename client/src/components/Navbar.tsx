@@ -11,10 +11,10 @@ export const Navbar = () => {
       </Flex>
       <Flex ml='auto' align='center' justify='flex-end'>
         <NextLink href='/login'>
-          <Link mr={2}>login</Link>
+          <Link mr={2}>Login</Link>
         </NextLink>
         <NextLink href='/register'>
-          <Link>register</Link>
+          <Link>Register</Link>
         </NextLink>
       </Flex>
     </Flex>

@@ -28,10 +28,10 @@ export const register = async (req: Request, res: Response) => {
 
 export const login = async (req: AuthRequest, res: Response) => {
   try {
-    const { username, password } = req.body;
-    const query = username.includes('@')
-      ? { where: { email: username } }
-      : { where: { username: username } };
+    const { usernameOrEmail, password } = req.body;
+    const query = usernameOrEmail.includes('@')
+      ? { where: { email: usernameOrEmail } }
+      : { where: { username: usernameOrEmail } };
 
     const user = await User.findOne(query);
 
@@ -50,7 +50,9 @@ export const login = async (req: AuthRequest, res: Response) => {
     } else {
       return res
         .status(404)
-        .send(`Could not find user with username or email of ${username}`);
+        .send(
+          `Could not find user with username or email of ${usernameOrEmail}`
+        );
     }
   } catch (err) {
     console.error(err.message);
