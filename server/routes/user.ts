@@ -1,7 +1,7 @@
-import express, { Router } from 'express';
+import { Router } from 'express';
 import { userController } from '../controllers';
 
-const router: Router = express.Router();
+const router: Router = Router();
 
 router.get('/register', userController.register);
 

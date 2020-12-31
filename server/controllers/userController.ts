@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
+import { compareSync } from 'bcryptjs';
 import { User } from '../entities';
+import { AuthRequest } from '../types';
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -20,6 +22,38 @@ export const register = async (req: Request, res: Response) => {
     });
   } catch (err) {
     console.error(err);
+    return res.status(500).send(err);
+  }
+};
+
+export const login = async (req: AuthRequest, res: Response) => {
+  try {
+    const { username, password } = req.body;
+    const query = username.includes('@')
+      ? { where: { email: username } }
+      : { where: { username: username } };
+
+    const user = await User.findOne(query);
+
+    if (user) {
+      const isPasswordCorrect = compareSync(password, user.password);
+
+      if (!isPasswordCorrect) throw new Error('Passwords is incorrect');
+      req.session.userId = user.id;
+      return res.status(200).send({
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        created_at: user.created_at,
+        updated_at: user.updated_at
+      });
+    } else {
+      return res
+        .status(404)
+        .send(`Could not find user with username or email of ${username}`);
+    }
+  } catch (err) {
+    console.error(err.message);
     return res.status(500).send(err);
   }
 };
