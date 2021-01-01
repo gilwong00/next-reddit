@@ -59,3 +59,23 @@ export const login = async (req: AuthRequest, res: Response) => {
     return res.status(500).send(err);
   }
 };
+
+export const whoami = async (req: AuthRequest, res: Response) => {
+  try {
+    const { userId } = req.session;
+
+    if (!userId) throw new Error('No user in session');
+
+    const user = await User.findOneOrFail({ id: userId });
+
+    return res.status(200).send({
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      created_at: user.created_at,
+      updated_at: user.updated_at
+    });
+  } catch (err) {
+    return res.status(500).send(err.message);
+  }
+};

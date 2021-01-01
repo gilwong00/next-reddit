@@ -3,6 +3,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { Navbar } from '../components/Navbar';
+import { AuthProvider } from '../context/authContext';
 import theme from '../theme';
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -10,8 +11,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider resetCSS theme={theme}>
       <QueryClientProvider client={queryClient}>
-        <Navbar />
-        <Component {...pageProps} />
+        <AuthProvider>
+          <Navbar />
+          <Component {...pageProps} />
+        </AuthProvider>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </ChakraProvider>

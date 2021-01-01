@@ -1,20 +1,27 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { Formik, Form } from 'formik';
-import { Box, Button, Link, Flex } from '@chakra-ui/react';
+import { Button, Link, Flex } from '@chakra-ui/react';
 import { InputField } from '../components/InputField';
 import { Card } from '../components/Card';
 import { useMutation } from 'react-query';
+import { authUser } from '../api';
 
 const Login: React.FC = () => {
   const router = useRouter();
-  // const mutation = useMutation()
+  const { mutate } = useMutation(authUser, {
+    onSuccess: data => {
+      console.log('data', data);
+      router.push('/');
+    }
+  });
+
   return (
     <Card>
       <Formik
         initialValues={{ usernameOrEmail: '', password: '' }}
         onSubmit={async values => {
-          console.log('values', values);
+          await mutate(values);
         }}
       >
         {({ isSubmitting }) => (
@@ -25,14 +32,12 @@ const Login: React.FC = () => {
               label='Username or Email'
               type='text'
             />
-            <Box mt={4}>
-              <InputField
-                name='password'
-                placeholder='Password'
-                label='Password'
-                type='password'
-              />
-            </Box>
+            <InputField
+              name='password'
+              placeholder='Password'
+              label='Password'
+              type='password'
+            />
             <Flex d='flex' justify='center' mt={5}>
               <Link href='/forgot-password' color='blue.500'>
                 Forgot Password?
