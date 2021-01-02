@@ -26,6 +26,10 @@ const theme = extendTheme({
           h: '56px',
           fontSize: 'lg',
           px: '32px'
+        },
+        sm: {
+          w: '100px',
+          mx: '5px'
         }
       },
       defaultProps: {

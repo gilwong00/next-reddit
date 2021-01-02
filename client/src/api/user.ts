@@ -6,7 +6,9 @@ export const authUser = async (body: {
   usernameOrEmail: string;
   password: string;
 }) => {
-  const { data } = await axios.post(`${BASE_URL}/login`, body);
+  const { data } = await axios.post(`${BASE_URL}/login`, body, {
+    withCredentials: true
+  });
   return data;
 };
 
@@ -20,6 +22,8 @@ export const register = async (body: {
 };
 
 export const whoami = async () => {
-  const { data } = await axios.get(`${BASE_URL}/whoami`);
+  const { data } = await axios.get(`${BASE_URL}/whoami`, {
+    withCredentials: true
+  });
   return data;
 };

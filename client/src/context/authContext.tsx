@@ -1,12 +1,12 @@
 import React, { createContext, useEffect, useReducer } from 'react';
 import { whoami } from '../api';
 
-enum Actions {
+export enum Actions {
   LOGIN = 'login',
   LOGOUT = 'logout'
 }
 
-interface IUser {
+export interface IUser {
   id: number;
   username: string;
   email: string;
@@ -70,7 +70,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
     getUser();
   }, []);
-
+  console.log('state', state);
   return (
     <AuthContext.Provider value={{ ...state, dispatch }}>
       {children}

@@ -1,4 +1,4 @@
-import React from 'react';
+import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import { Formik, Form } from 'formik';
 import { Button, Link, Flex } from '@chakra-ui/react';
@@ -6,12 +6,14 @@ import { InputField } from '../components/InputField';
 import { Card } from '../components/Card';
 import { useMutation } from 'react-query';
 import { authUser } from '../api';
+import { AuthContext, Actions } from 'context/authContext';
 
 const Login: React.FC = () => {
   const router = useRouter();
+  const { dispatch } = useContext(AuthContext);
   const { mutate } = useMutation(authUser, {
     onSuccess: data => {
-      console.log('data', data);
+      dispatch({ type: Actions.LOGIN, payload: data });
       router.push('/');
     }
   });

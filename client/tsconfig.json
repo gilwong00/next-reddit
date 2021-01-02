@@ -17,6 +17,7 @@
     "skipLibCheck": true,
     "strict": true,
 		"target": "esnext",
+		"baseUrl": "src"
   },
   "exclude": ["node_modules"],
   "include": ["**/*.ts", "**/*.tsx"]

@@ -9,7 +9,9 @@
 		"start": "ts-node src/index.ts",
 		"server": "nodemon --exec ts-node server/server.ts",
 		"client": "cd client && yarn dev",
-		"dev": "concurrently \"yarn server\" \"yarn client\" --names server,client"
+		"dev": "concurrently \"yarn server\" \"yarn client\" --names server,client",
+		"typeorm": "ts-node ./node_modules/typeorm/cli.js",
+		"migration:new": "yarn typeorm migration:generate --name"
 	},
 	"dependencies": {
 		"bcryptjs": "^2.4.3",

@@ -1,18 +1,9 @@
-import { Base } from '.';
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  BeforeInsert,
-  Index
-} from 'typeorm';
+import { Base, Post } from '.';
+import { Entity, Column, BeforeInsert, Index, OneToMany } from 'typeorm';
 import { hash, genSaltSync } from 'bcryptjs';
 
 @Entity('users')
 class User extends Base {
-  @PrimaryGeneratedColumn()
-  id: number;
-
   @Index()
   @Column({ unique: true })
   username: string;
@@ -23,6 +14,9 @@ class User extends Base {
 
   @Column()
   password: string;
+
+  @OneToMany(() => Post, post => post.user)
+  posts: Array<Post>;
 
   @BeforeInsert()
   async hashPassword() {

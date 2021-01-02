@@ -6,7 +6,7 @@ import { AuthRequest } from '../types';
 export const register = async (req: Request, res: Response) => {
   try {
     const { email, username, password } = req.body;
-    const doesUserExist: boolean = !!(await User.findOneOrFail({ email }));
+    const doesUserExist: boolean = !!(await User.findOne({ email }));
 
     if (doesUserExist)
       return res.status(400).send('Email address is already in use');

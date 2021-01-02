@@ -2,16 +2,17 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { Formik, Form } from 'formik';
 import { Button } from '@chakra-ui/react';
-import { InputField } from '../components/InputField';
-import { Card } from '../components/Card';
+import { InputField } from 'components/InputField';
+import { Card } from 'components/Card';
 import { useMutation } from 'react-query';
-import { register } from '../api';
+import { useToast } from 'hooks';
+import { register } from 'api';
 
 const Register: React.FC = () => {
   const router = useRouter();
+  const { pushNotification } = useToast();
   const { mutate } = useMutation(register, {
-    onSuccess: data => {
-      console.log('data', data);
+    onSuccess: (): void => {
       router.push('/login');
     }
   });
@@ -26,7 +27,11 @@ const Register: React.FC = () => {
           confirmPassword: ''
         }}
         onSubmit={async values => {
-          await mutate(values);
+          if (values.password === values.confirmPassword) {
+            await mutate(values);
+          } else {
+            pushNotification('error', 'passwords do not match');
+          }
         }}
       >
         {({ isSubmitting }) => (

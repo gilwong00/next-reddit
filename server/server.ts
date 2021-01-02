@@ -9,7 +9,7 @@ import connectRedis from 'connect-redis';
 import dotenv from 'dotenv';
 import routes from './routes';
 import { createConnection } from 'typeorm';
-import { User } from './entities';
+import { Post, User, Vote } from './entities';
 
 dotenv.config();
 
@@ -28,10 +28,11 @@ const initServer = async () => {
     logging: true,
     synchronize: process.env.NODE_ENV !== 'production',
     migrations: [path.join(__dirname, './server/migrations/*')],
-    entities: [User]
+    entities: [User, Post, Vote]
   });
 
   app.use(express.json());
+  app.use(morgan('combined'));
   app.set('trust proxy', 1);
   app.use(
     cors({
@@ -42,7 +43,6 @@ const initServer = async () => {
           : 'http://localhost:3000'
     })
   );
-  app.use(morgan('combined'));
   app.use(
     session({
       name: 'user',
