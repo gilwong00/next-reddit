@@ -28,6 +28,14 @@ export const Navbar = () => {
       </Flex>
       {authenticated ? (
         <Flex ml='auto' align='center' justify='flex-end'>
+          <Button
+            colorScheme='teal'
+            size='sm'
+            mr={5}
+            onClick={() => router.push('/posts/create')}
+          >
+            Create Post
+          </Button>
           <Text>{user?.username}</Text>
         </Flex>
       ) : (
