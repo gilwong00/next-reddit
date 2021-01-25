@@ -40,6 +40,7 @@ export const login = async (req: AuthRequest, res: Response) => {
 
       if (!isPasswordCorrect) throw new Error('Passwords is incorrect');
       req.session.userId = user.id;
+
       return res.status(200).send({
         id: user.id,
         username: user.username,

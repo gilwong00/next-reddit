@@ -43,6 +43,7 @@ const initServer = async () => {
           : 'http://localhost:3000'
     })
   );
+
   app.use(
     session({
       name: 'user',
@@ -50,9 +51,9 @@ const initServer = async () => {
       resave: false,
       saveUninitialized: false,
       cookie: {
-        maxAge: 4 * 60 * 60 * 1000, // 4 hours
+        maxAge: 4 * 60 * 60 * 1000,
         httpOnly: true,
-        sameSite: 'lax'
+        sameSite: 'lax' //csrf
       },
       store: new RedisStore({
         client: redis,

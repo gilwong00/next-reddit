@@ -1,18 +1,30 @@
 import { useField } from 'formik';
-import { Input, FormErrorMessage, FormControl } from '@chakra-ui/react';
+import {
+  Input,
+  FormErrorMessage,
+  FormControl,
+  Textarea
+} from '@chakra-ui/react';
 
 interface IProps {
   label: string;
   name: string;
   type: string;
   placeholder: string;
+  textarea?: boolean;
 }
 
-export const InputField: React.FC<IProps> = ({ label, ...props }) => {
+export const InputField: React.FC<IProps> = ({ textarea, ...props }) => {
   const [field, meta] = useField(props);
+
   return (
     <FormControl mb={5}>
-      <Input {...field} {...props} />
+      {textarea ? (
+        <Textarea {...field} {...props} />
+      ) : (
+        <Input {...field} {...props} />
+      )}
+
       {meta.touched && meta.error && (
         <FormErrorMessage>{meta.error}</FormErrorMessage>
       )}

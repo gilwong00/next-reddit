@@ -5,6 +5,6 @@ import { isAuth } from '../middleware';
 const router: Router = Router();
 
 router.get('/', postController.getPosts);
-router.post('/', isAuth, postController.getPosts);
+router.post('/', isAuth, postController.createPost);
 
 export default router;
