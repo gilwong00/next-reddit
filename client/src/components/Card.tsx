@@ -11,7 +11,6 @@ export const Card: React.FC<IProps> = ({ children }) => (
     borderRadius='sm'
     overflow='hidden'
     p={5}
-    align='center'
     w={{ sm: 300, md: 600 }}
     ml='auto'
     mr='auto'
