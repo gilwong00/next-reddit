@@ -65,8 +65,7 @@ export const whoami = async (req: AuthRequest, res: Response) => {
   try {
     const { userId } = req.session;
 
-    if (!userId) throw new Error('No user in session');
-
+    if (!userId) return res.status(401).send('Not Authed');
     const user = await User.findOneOrFail({ id: userId });
 
     return res.status(200).send({

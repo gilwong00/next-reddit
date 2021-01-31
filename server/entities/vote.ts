@@ -13,10 +13,14 @@ class Vote extends Base {
   @Column()
   username: string;
 
+  @Column({ type: 'int' })
+  postId: number;
+
   @ManyToOne(() => Post)
+  @JoinColumn({ name: 'postId', referencedColumnName: 'id' })
   post: Post;
 
-  // add a many to one for commets
+  // add a many to one for comments
 }
 
 export default Vote;

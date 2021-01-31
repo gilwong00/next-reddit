@@ -1,21 +1,13 @@
 import NextLink from 'next/link';
 import { useState } from 'react';
-// import { usePosts } from 'hooks/usePost';
 import { useQuery } from 'react-query';
 import { getPost } from 'api';
 import { useToast } from 'hooks';
-import {
-  Spinner,
-  Stack,
-  Box,
-  Link,
-  Heading,
-  Text,
-  Flex
-} from '@chakra-ui/react';
+import { Spinner, Stack, Box, Heading, Text, Flex } from '@chakra-ui/react';
 import { Card } from './Card';
+import { Vote } from './Vote';
 
-interface IPost {
+export interface IPost {
   id: number;
   body: string;
   title: string;
@@ -39,21 +31,27 @@ const PostList: React.FC = () => {
       {data?.posts.map((post: IPost) => {
         return (
           <Card key={post.id}>
-            <Box flex={1}>
-              <NextLink href='/post/[id]' as={`/post/${post.id}`}>
-                <Heading fontSize='xl' style={{ textTransform: 'capitalize' }}>
-                  {post.title}
-                </Heading>
-              </NextLink>
+            <Flex direction='row'>
+              <Vote postId={post.id} votes={post.votes.length ?? 0} />
+              <Box flex={1}>
+                <NextLink href='/post/[id]' as={`/post/${post.id}`}>
+                  <Heading
+                    fontSize='xl'
+                    style={{ textTransform: 'capitalize' }}
+                  >
+                    {post.title}
+                  </Heading>
+                </NextLink>
 
-              <Text>posted by {post.username}</Text>
-              <Flex align='center'>
-                <Text flex={1} mt={4}>
-                  {post.body}
-                </Text>
-                <Box ml='auto'></Box>
-              </Flex>
-            </Box>
+                <Text>posted by {post.username}</Text>
+                <Flex align='center'>
+                  <Text flex={1} mt={4}>
+                    {post.body}
+                  </Text>
+                  <Box ml='auto'></Box>
+                </Flex>
+              </Box>
+            </Flex>
           </Card>
         );
       })}
