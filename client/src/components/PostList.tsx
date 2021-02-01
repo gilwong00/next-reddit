@@ -14,13 +14,19 @@ export interface IPost {
   username: string;
   created_at: string;
   votes: Array<any>;
+  totalVotes: number;
 }
 
 const PostList: React.FC = () => {
   const [page, setPage] = useState<number>(1);
   const { pushNotification } = useToast();
-  const { data, status, error } = useQuery<any>(['posts', page], () =>
-    getPost(page)
+  const { data, status, error, refetch } = useQuery<{ posts: Array<IPost> }>(
+    'posts',
+    () => getPost(page),
+    {
+      cacheTime: 50000,
+      staleTime: 0
+    }
   );
 
   if (status === 'loading') return <Spinner size='xl' />;
@@ -32,7 +38,12 @@ const PostList: React.FC = () => {
         return (
           <Card key={post.id}>
             <Flex direction='row'>
-              <Vote postId={post.id} votes={post.votes.length ?? 0} />
+              <Vote
+                postId={post.id}
+                votes={post.votes}
+                totalVotes={post.totalVotes}
+                refetch={refetch}
+              />
               <Box flex={1}>
                 <NextLink href='/post/[id]' as={`/post/${post.id}`}>
                   <Heading

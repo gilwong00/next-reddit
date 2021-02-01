@@ -5,20 +5,28 @@ import { Flex, IconButton, Text } from '@chakra-ui/react';
 import { ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import { useMutation } from 'react-query';
 import { vote } from 'api';
-
 interface IProps {
   postId: number;
-  votes: number;
+  votes: Array<string>;
+  totalVotes: number;
+  refetch: () => Promise<any>;
 }
 
-export const Vote: React.FC<IProps> = ({ postId, votes }) => {
+export const Vote: React.FC<IProps> = ({
+  postId,
+  votes,
+  totalVotes,
+  refetch
+}) => {
   const router = useRouter();
   const { authenticated, user } = useContext(AuthContext);
-  const { mutate } = useMutation(vote);
+  const { mutateAsync } = useMutation(vote, {
+    onSuccess: () => refetch()
+  });
 
   const handleVote = async (value: 1 | -1) => {
     if (!authenticated || !user) return router.push('/login');
-    return await mutate({ value, postId, username: user.username });
+    return await mutateAsync({ value, postId, username: user.username });
   };
 
   return (
@@ -28,9 +36,10 @@ export const Vote: React.FC<IProps> = ({ postId, votes }) => {
         aria-label='up vote post'
         icon={<ChevronUpIcon />}
         onClick={async () => await handleVote(1)}
+        isDisabled={votes.includes(user?.username ?? '')}
       />
       <Text mt={2} mb={2}>
-        {votes}
+        {totalVotes}
       </Text>
       <IconButton
         colorScheme='red'

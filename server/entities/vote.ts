@@ -14,10 +14,10 @@ class Vote extends Base {
   username: string;
 
   @Column({ type: 'int' })
-  postId: number;
+  post_id: number;
 
   @ManyToOne(() => Post)
-  @JoinColumn({ name: 'postId', referencedColumnName: 'id' })
+  @JoinColumn({ name: 'post_id', referencedColumnName: 'id' })
   post: Post;
 
   // add a many to one for comments

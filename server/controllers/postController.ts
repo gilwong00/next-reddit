@@ -10,9 +10,40 @@ interface IPost {
   id: number;
   created_at: Date;
   updated_at: Date;
+  totalVotes: number;
+}
+
+interface IVoteAccumlator {
+  votes: Array<string>;
+  totalVotes: number;
 }
 
 const PAGE_LIMIT = 10;
+
+// this might still need some work
+// if there was only 1 vote and the user with that vote decides to downvote, the 1 should go down to -1
+const computeVotes = (
+  postVotes: Array<Vote>
+): { votes: Array<string>; totalVotes: number } => {
+  return postVotes.reduce<IVoteAccumlator>(
+    (acc: IVoteAccumlator, curr: Vote) => {
+      const isUpVote: boolean = curr.value === 1;
+      if (isUpVote) acc.votes.push(curr.username);
+
+      if (!isUpVote) {
+        if (acc.votes.includes(curr.username)) {
+          acc.votes = acc.votes.filter(
+            (vote: string) => vote !== curr.username
+          );
+        }
+      }
+
+      acc.totalVotes = isUpVote ? (acc.totalVotes += 1) : (acc.totalVotes -= 1);
+      return acc;
+    },
+    { votes: [], totalVotes: 0 }
+  );
+};
 
 export const getPosts = async (req: Request, res: Response) => {
   try {
@@ -24,22 +55,12 @@ export const getPosts = async (req: Request, res: Response) => {
       relations: ['votes']
     });
 
-    // interate through the votes and return and array with userIds that have a upvote
     const response: Array<IPost> = result.map<IPost>(post => {
-      const votes =
-        post.votes.length === 0
-          ? []
-          : post.votes.reduce<Array<string>>(
-              (acc: Array<string>, curr: Vote) => {
-                if (curr.value === 1) acc.push(curr.username);
-                return acc;
-              },
-              []
-            );
-
+      const { votes, totalVotes } = computeVotes(post.votes);
       return {
         ...post,
-        votes
+        votes,
+        totalVotes
       };
     });
 
