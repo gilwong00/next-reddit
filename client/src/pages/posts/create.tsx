@@ -4,14 +4,16 @@ import { Formik, Form, FormikProps } from 'formik';
 import { InputField } from '../../components/InputField';
 import { Button } from '@chakra-ui/react';
 import { AuthContext } from 'context/authContext';
-import { useMutation } from 'react-query';
+import { QueryClient, useMutation, useQueryClient } from 'react-query';
 import { createPost } from 'api';
 
 const CreatePost = () => {
+  const client: QueryClient = useQueryClient();
   const { user } = useContext(AuthContext);
   const { mutate } = useMutation(createPost, {
     onSuccess: data => {
-      console.log('data', data);
+      // we can make this into a reusable hook
+      client.setQueryData('posts', { id: data.id }, data);
     }
   });
   return (

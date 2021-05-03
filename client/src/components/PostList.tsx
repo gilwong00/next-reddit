@@ -26,6 +26,7 @@ const PostList: React.FC = () => {
     {
       cacheTime: 50000,
       staleTime: 0
+      // refetchOnMount: 'always'
     }
   );
 
