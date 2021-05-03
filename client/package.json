@@ -15,10 +15,10 @@
 		"axios": "^0.21.1",
 		"formik": "^2.2.6",
 		"framer-motion": "^3.1.1",
-		"next": "10.0.3",
+		"next": "^10.2.0",
 		"react": "^17.0.1",
 		"react-dom": "^17.0.1",
-		"react-query": "^3.6.0",
+		"react-query": "^3.15.2",
 		"yarn": "^1.22.10"
 	},
 	"devDependencies": {
