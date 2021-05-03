@@ -1,6 +1,6 @@
 import { Base, Post } from '.';
 import { Entity, Column, BeforeInsert, Index, OneToMany } from 'typeorm';
-import { hash, genSaltSync } from 'bcryptjs';
+import { hash } from 'argon2';
 
 @Entity('users')
 class User extends Base {
@@ -20,8 +20,7 @@ class User extends Base {
 
   @BeforeInsert()
   async hashPassword() {
-    const salt = genSaltSync(10);
-    this.password = await hash(this.password, salt);
+    this.password = await hash(this.password);
   }
 }
 

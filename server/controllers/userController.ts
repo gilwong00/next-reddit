@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { compareSync } from 'bcryptjs';
+import { verify } from 'argon2';
 import { User } from '../entities';
 import { AuthRequest } from '../types';
 
@@ -36,7 +36,7 @@ export const login = async (req: AuthRequest, res: Response) => {
     const user = await User.findOne(query);
 
     if (user) {
-      const isPasswordCorrect = compareSync(password, user.password);
+      const isPasswordCorrect = await verify(user.password, password);
 
       if (!isPasswordCorrect) throw new Error('Passwords is incorrect');
       req.session.userId = user.id;

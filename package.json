@@ -14,7 +14,7 @@
 		"migration:new": "yarn typeorm migration:generate --name"
 	},
 	"dependencies": {
-		"bcryptjs": "^2.4.3",
+		"argon2": "^0.27.2",
 		"connect-redis": "^5.0.0",
 		"cors": "^2.8.5",
 		"dotenv": "^8.2.0",
